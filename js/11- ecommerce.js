@@ -15,12 +15,35 @@ new Product (4, 'Alfajor de membrillo',50, 'https://images.unsplash.com/photo-16
 new Product(5,'brownie', 70, 'https://media.istockphoto.com/photos/homemade-dark-chocolate-fudge-brownies-cake-picture-id1344355252?b=1&k=20&m=1344355252&s=170667a&w=0&h=Yhap5AbqLBzMQ7gTxzH-aIUJc_4fdXziVXK0dK6GuKQ=')
 ]
 
-let favs = [];
-if (localStorage.getItem('favs')) {
-  
+let favsFromLS = JSON.parse(localStorage.getItem('favs'));
+let favs;
+if (favsFromLS===null) {
+  favs=[];
+}else {
+  favs = favsFromLS
 }
 
+
 console.log(products);
+
+favs.forEach(fav=>{
+  //!STEP 1: crear el elemento
+  let favCard = document.createElement('div');
+  //!STEP 2: decirle al elemento que lleva adentro
+  favCard.classList.add('card','my-3');
+  favCard.id = fav.id;
+  favCard.innerHTML=`
+  <div class="card-body">
+    <h5 class="card-title"> ${fav.name}</h5>
+    <p class="card-text">Precio: $${fav.price}</p>
+    <button class="btn btn-dark" onclick="removeFav(event)"> X </button>
+  </div>
+  `
+  //!STEP 3: Llamar al padre 
+  let favsContainer = document.querySelector('.favs-container');
+  //!STEP 4: Adoptar al hijo
+  favsContainer.appendChild(favCard)
+})
 
 products.forEach(product=>{
   //!STEP 1: crear el elemento
@@ -35,8 +58,8 @@ products.forEach(product=>{
   <div class="card-body">
     <h5 class="card-title"> ${product.name}</h5>
     <p class="card-text">Precio: $${product.price}</p>
-    <button class="btn btn-dark">Carrito</button>
-    <button class="btn btn-dark" onclick='addFav(${product.id})'> Favorito </button>
+    <button class="btn btn-dark" onclick="addProductToCart(event)">Carrito</button>
+    <button class="btn btn-dark" onclick="addFav(event)"> Favorito </button>
   </div>
   `
   //!STEP 3: Llamar al padre 
@@ -69,11 +92,31 @@ const addFav = (event)=>{
   <div class="card-body">
     <h5 class="card-title"> ${product.name}</h5>
     <p class="card-text">Precio: $${product.price}</p>
-    <button class="btn btn-dark">Eliminar </button>
+    <button class="btn btn-dark">Eliminar producto</button>
   </div>
   `
   let favsContainer = document.querySelector('.favs-container');
   favsContainer.appendChild(productCard);
   favs.push(product);
   localStorage.setItem('favs', JSON.stringify(favs));
+}
+
+let cart;
+const addProductToCart = (event) => {
+  //!STEP 1 identificar el producto donde se hizo click
+  let productId = event.target.parentElement.parentElement.id;
+  let product = products.find(product=>product.id==productId);
+  //!STEP 2  agregar el producto a local storage
+  //*Traer si es que hay algo de LS
+  let cartFromLS = JSON.parse(localStorage.getItem('cart'));
+  //* Chequear si no esta vacio
+  if (cartFromLS==null) {
+    cart=[];
+  } else{
+    cart=cartFromLS
+  }
+  //*Editar el array
+  cart.push(product);
+  //*Enviamos a Local Storage
+  localStorage.setItem('cart',JSON.stringify(cart));
 }

@@ -39,4 +39,10 @@ let products = [
 
 localStorage.setItem('products', JSON.stringify(products));
 
-let productsFromLS = JSON.parselocalStorage.getItem('products')
+let productsFromLS = JSON.parselocalStorage.getItem('products');
+
+//WEB STORAGE
+
+//key : value 
+
+localStorage.setItem
