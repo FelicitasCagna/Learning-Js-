@@ -31,7 +31,7 @@ favs.forEach(fav=>{
   let favCard = document.createElement('div');
   //!STEP 2: decirle al elemento que lleva adentro
   favCard.classList.add('card','my-3');
-  favCard.id = fav.id;
+  favCard.id = 'fav'+fav.id;
   favCard.innerHTML=`
   <div class="card-body">
     <h5 class="card-title"> ${fav.name}</h5>
@@ -119,4 +119,20 @@ const addProductToCart = (event) => {
   cart.push(product);
   //*Enviamos a Local Storage
   localStorage.setItem('cart',JSON.stringify(cart));
+}
+
+const removeFav = (event)=>{
+  //!STEP 1: identificar el id
+  const idProduct = event.target.parentElement.parentElement.id;
+  //!STEP 2: traer el elemento y borrarlo
+  const productToRemove = document.getElementById(idProduct);
+  console.log(productToRemove);
+  productToRemove.remove();
+  //!STEP 3: borralo del local storage 
+  //*Traer si es que hay algo de LS
+  let favsFromLS = JSON.parse(localStorage.getItem('favs'));
+  //*Editar el array
+  let favsUpdated =  favsFromLS.filter(fav=>fav.id!=idProduct.slice(0,3));
+  //*Enviamos a Local Storage
+  localStorage.setItem('favs',JSON.stringify(favsUpdated));
 }
