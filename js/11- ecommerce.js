@@ -15,6 +15,8 @@ new Product (4, 'Alfajor de membrillo',50, 'https://images.unsplash.com/photo-16
 new Product(5,'brownie', 70, 'https://media.istockphoto.com/photos/homemade-dark-chocolate-fudge-brownies-cake-picture-id1344355252?b=1&k=20&m=1344355252&s=170667a&w=0&h=Yhap5AbqLBzMQ7gTxzH-aIUJc_4fdXziVXK0dK6GuKQ=')
 ]
 
+localStorage.setItem('products',JSON.stringify(products));
+
 let favsFromLS = JSON.parse(localStorage.getItem('favs'));
 let favs;
 if (favsFromLS===null) {
@@ -47,7 +49,8 @@ favs.forEach(fav=>{
 
 products.forEach(product=>{
   //!STEP 1: crear el elemento
-  let productCard = document.createElement('div');
+  let productCard = document.createElement('a');
+  productCard.href = window.location.origin + '/ecommerce/detailPage.html#'+ product.id;
   //!STEP 2: decirle al elemento que lleva adentro
 //? primer id hace referencia al id del card que estamos creando, el segundo hace referencia al id de cada producto que esta en el array
   productCard.id= product.id;
@@ -135,4 +138,17 @@ const removeFav = (event)=>{
   let favsUpdated =  favsFromLS.filter(fav=>fav.id!=idProduct.slice(0,3));
   //*Enviamos a Local Storage
   localStorage.setItem('favs',JSON.stringify(favsUpdated));
+}
+
+const logout = ()=> {
+  let usersLS = JSON.parse(localStorage.getItem('users'));
+  let userActive = usersLS.find(user=>user.id == localStorage.getItem('user'));
+  userActive.favs = favs;
+  usersLS.filter(user=>user.id!= localStorage.getItem('user'));
+  usersLS.push(userActive)
+  localStorage.setItem('users', JSON.stringify(usersLS));
+  localStorage.removeItem('favs');
+  localStorage.removeItem('cart');
+  localStorage.removeItem('user');
+  window.location.assign(window.location.origin+'/ecommerce/login.html')
 }
