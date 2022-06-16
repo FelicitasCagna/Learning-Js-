@@ -1,12 +1,13 @@
 //* SIMULAMOS UNA BASE DE DATOS
 class User {
-    constructor(id, name, email, password){
+    constructor(id, name, email, password, admin){
         this.name = name;
         this.id = id;
         this.email = email;
         this.password = password;
         this.favs = [];
         this.cart = [];
+        this.admin = admin;
     }
 }
 
@@ -18,10 +19,10 @@ if (usersFromLS) {
     users = usersFromLS
 } else{
     users = [
-        new User (1, 'Diego Fernandez', 'diego@gmail.com', '12345678',[],[]),
-        new User (2, 'Paula Moyano', 'paula@gmail.com', '87654321',[],[]),
-        new User (3, 'lionel Scaloni', 'scaloneta@gmail.com', 'LeoSiempreTitular',[],[]),
-        new User(4, 'Lionel Messi', 'elultimo10@gmail.com','antoteamo',[],[])
+        new User (1, 'Diego Fernandez', 'diego@gmail.com', '12345678',true),
+        new User (2, 'Paula Moyano', 'paula@gmail.com', '87654321',true),
+        new User (3, 'lionel Scaloni', 'scaloneta@gmail.com', 'LeoSiempreTitular',true),
+        new User(4, 'Lionel Messi', 'elultimo10@gmail.com','antoteamo',true)
     ];
     localStorage.setItem('users',JSON.stringify(users))
 }
@@ -96,7 +97,8 @@ const register = (event)=>{
         if (usersLS.find(user=>user.email==email)) {
             console.log('usuario ya registrado');
         } else{
-        usersLS.push(new User(usersLS.lenght+1,fullName,email,pass));
+        usersLS.push(new User(usersLS.lenght+1,fullName,email,pass, false));
+        localStorage.setItem('user',JSON.stringify(usersLS.lenght+1));
         window.location.assign(window.location.origin+'/ecommerce/ecommerce.html')
         }
         //!STEP 3: Envio de vuelta a LS

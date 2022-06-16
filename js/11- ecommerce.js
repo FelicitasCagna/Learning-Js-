@@ -152,3 +152,17 @@ const logout = ()=> {
   localStorage.removeItem('user');
   window.location.assign(window.location.origin+'/ecommerce/login.html')
 }
+
+
+// IDENTIFICAMOS SI EL USUARIO ES ADMIN O NO 
+let userId = localStorage.getItem('user');
+let users = JSON.parse(localStorage.getItem('users'));
+let userActive = users.find(user=>user.id==userId)
+if (userActive.admin) {
+  let adminButton = document.createElement('li');
+  adminButton.classList.add('nav-item');
+  adminButton.innerHTML = `
+  <a class="nav-link" href="http://127.0.0.1:5506/ecommerce/admin.html ">Administracion</a>
+  `;
+  document.getElementById('options-header').appendChild(adminButton);
+}
